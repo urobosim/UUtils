@@ -16,7 +16,7 @@ int32 FTags::GetTagTypeIndex(const TArray<FName>& InTags, const FString& TagType
 			return i;
 		}
 	}
-	// return INDEX_NONE if type was not found 
+	// return INDEX_NONE if type was not found
 	return INDEX_NONE;
 
 	//// Init tag index
@@ -34,7 +34,7 @@ int32 FTags::GetTagTypeIndex(const TArray<FName>& InTags, const FString& TagType
 	//		return TagIndex;
 	//	}
 	//}
-	//// return INDEX_NONE if type was not found 
+	//// return INDEX_NONE if type was not found
 	//return INDEX_NONE;
 }
 
@@ -64,7 +64,7 @@ int32 FTags::GetTagTypeIndex(UObject* Object, const FString& TagType)
 	else
 	{
 		return INDEX_NONE;
-	}	
+	}
 }
 
 
@@ -244,7 +244,7 @@ bool FTags::HasKeyValuePair(UObject* Object, const FString& TagType, const FStri
 	else
 	{
 		return false;
-	}	
+	}
 }
 
 
@@ -259,8 +259,8 @@ FString FTags::GetValue(const FName& InTag, const FString& TagKey)
 	int32 KeyPos = CurrTag.Find(";" + TagKey + ",");
 	if (KeyPos != INDEX_NONE)
 	{
-		// Remove from tag with the cut length of: 
-		// pos of the key + length of the semicolon char + length of the key + length of the comma char 
+		// Remove from tag with the cut length of:
+		// pos of the key + length of the semicolon char + length of the key + length of the comma char
 		CurrTag.RemoveAt(0, KeyPos + 1 + TagKey.Len() + 1);
 		// Set the tag value as the left side of the string before the semicolon
 		return CurrTag.Left(CurrTag.Find(";"));
@@ -1004,17 +1004,34 @@ TMap<FString, UActorComponent*> FTags::GetKeyValuesToComponents(UWorld* World, c
 // Get all actors with the key value pair as array
 TArray<AActor*> FTags::GetActorsWithKeyValuePair(UWorld* World, const FString& TagType, const FString& TagKey, const FString& TagValue)
 {
+
+          UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
 	// Array of actors
 	TArray<AActor*> ActorsWithKeyValuePair;
 	// Iterate all actors in the world
+
+
+        World->CleanupActors();
+        UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
+        if(!World)
+          {
+            UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
+          }
+        else
+          {
+            UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
+          }
 	for (TActorIterator<AActor> ActorItr(World); ActorItr; ++ActorItr)
 	{
 		// Add actor to array if it has tag type with key and value pair
-		if (FTags::HasKeyValuePair(ActorItr->Tags, TagType, TagKey, TagValue))
+
+          UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
+                if (FTags::HasKeyValuePair(ActorItr->Tags, TagType, TagKey, TagValue))
 		{
 			ActorsWithKeyValuePair.Emplace(*ActorItr);
 		}
-	}
+                UE_LOG(LogTemp, Warning, TEXT("[%s:%s]: reached"), *FString(__FUNCTION__), *FString::FromInt(__LINE__));
+        }
 	return ActorsWithKeyValuePair;
 }
 
@@ -1079,7 +1096,7 @@ TSet<UActorComponent*> FTags::GetComponentsWithKeyValuePairAsSet(UWorld* World, 
 
 
 ///////////////////////////////////////////////////////////
-// Get all actors with the key value pair	
+// Get all actors with the key value pair
 TSet<AActor*> FTags::GetActorSetWithKeyValuePair(UWorld* World, const FString& TagType, const FString& TagKey, const FString& TagValue)
 {
 	return TSet<AActor*>(GetActorsWithKeyValuePair(World, TagType, TagKey, TagValue));
